@@ -1,0 +1,27 @@
+# VSCode config stuff
+!.vscode/c_cpp_properties.json
+!.vscode/tasks.json
+!.vscode/settings.json
+.cache/
+
+# Jetbrains IDEs
+.idea/
+
+# NDK stuff
+ndkpath.txt
+*.zip
+*.txt
+*.log
+
+# QPM stuff
+[Ee]xtern/
+*.qmod
+qpm_defines.cmake
+!CMakeLists.txt
+
+# CMake stuff
+[Bb]uild/
+extern.cmake
+
+# QMOD stuff
+mod.json.schema
