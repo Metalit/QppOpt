@@ -4,16 +4,16 @@
   "id": "qppopt",
   "modloader": "Scotland2",
   "author": "Metalit",
-  "version": "1.1.2",
+  "version": "1.1.4",
   "packageId": "com.beatgames.beatsaber",
   "packageVersion": "1.40.8_7379",
   "description": "Allows mods to integrate with Qounters++ without requiring it to be installed",
   "coverImage": "cover.png",
   "dependencies": [
     {
-      "version": "^1.1.2",
+      "version": "^1.1.4",
       "id": "qounters++",
-      "downloadIfMissing": "https://github.com/Metalit/Qounters/releases/download/v1.1.2/Qounters++.qmod",
+      "downloadIfMissing": "https://github.com/Metalit/Qounters/releases/download/v1.1.4/Qounters++.qmod",
       "required": false
     }
   ],

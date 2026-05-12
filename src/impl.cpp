@@ -32,6 +32,12 @@ bool API::InSettings() {
 bool API::IsInstalled() {
     return false;
 };
+bool API::IsEnabled() {
+    return false;
+};
+bool API::IsEnabledForSelection(GlobalNamespace::BeatmapKey beatmap) {
+    return false;
+};
 
 #include "events.hpp"
 

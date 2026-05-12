@@ -2,13 +2,14 @@
 
 #include "UnityEngine/GameObject.hpp"
 #include "config-utils/shared/config-utils.hpp"
+#include "export.h"
 #include "types.hpp"
 
 namespace Qounters::Sources {
-    extern std::vector<std::pair<std::string, std::pair<Types::SourceFn<std::string>, Types::SourceUIFn>>> texts;
-    extern std::vector<std::pair<std::string, std::pair<Types::SourceFn<float>, Types::SourceUIFn>>> shapes;
-    extern std::vector<std::pair<std::string, std::pair<Types::SourceFn<UnityEngine::Color>, Types::SourceUIFn>>> colors;
-    extern std::vector<std::pair<std::string, std::pair<Types::SourceFn<bool>, Types::SourceUIFn>>> enables;
+    QOUNTERS_EXPORT extern std::vector<std::pair<std::string, std::pair<Types::SourceFn<std::string>, Types::SourceUIFn>>> texts;
+    QOUNTERS_EXPORT extern std::vector<std::pair<std::string, std::pair<Types::SourceFn<float>, Types::SourceUIFn>>> shapes;
+    QOUNTERS_EXPORT extern std::vector<std::pair<std::string, std::pair<Types::SourceFn<UnityEngine::Color>, Types::SourceUIFn>>> colors;
+    QOUNTERS_EXPORT extern std::vector<std::pair<std::string, std::pair<Types::SourceFn<bool>, Types::SourceUIFn>>> enables;
 
     struct PremadeInfo {
         std::string name;
@@ -24,21 +25,23 @@ namespace Qounters::Sources {
             update(update) {}
     };
     // map with mod name for ordering purposes
-    extern std::map<std::string, std::vector<PremadeInfo>> premades;
-    PremadeInfo* GetPremadeInfo(std::string const& mod, std::string const& name);
+    QOUNTERS_EXPORT extern std::map<std::string, std::vector<PremadeInfo>> premades;
+    QOUNTERS_EXPORT PremadeInfo* GetPremadeInfo(std::string const& mod, std::string const& name);
+
+    QOUNTERS_EXPORT void MissingSourceUI(UnityEngine::GameObject*, UnparsedJSON);
 
     template <class T>
-    T GetSource(std::vector<std::pair<std::string, T>> sourceVec, std::string source) {
+    std::pair<T, Types::SourceUIFn> GetSource(std::vector<std::pair<std::string, std::pair<T, Types::SourceUIFn>>>& sourceVec, std::string source) {
         for (auto& [str, ret] : sourceVec) {
             if (str == source)
                 return ret;
         }
-        return {};
+        return {T{}, MissingSourceUI};
     }
 
     template <class T>
     inline void Register(
-        std::vector<std::pair<std::string, std::pair<T, Types::SourceUIFn>>> sourceVec, std::string source, T sourceFn, Types::SourceUIFn sourceUIFn
+        std::vector<std::pair<std::string, std::pair<T, Types::SourceUIFn>>>& sourceVec, std::string source, T sourceFn, Types::SourceUIFn sourceUIFn
     ) {
         sourceVec.emplace_back(source, std::make_pair(sourceFn, sourceUIFn));
     }
@@ -56,13 +59,13 @@ namespace Qounters::Sources {
         Register(enables, sourceName, sourceFn, sourceUIFn);
     }
 
-    extern std::vector<std::string_view> const AverageCutPartStrings;
-    extern std::vector<std::string_view> const PBDisplayStrings;
-    extern std::vector<std::string_view> const NotesDisplayStrings;
-    extern std::vector<std::string_view> const PPLeaderboardStrings;
-    extern std::vector<std::string_view> const SaberSpeedModeStrings;
-    extern std::vector<std::string_view> const SpinometerModeStrings;
-    extern std::vector<std::string_view> const RankedStatusLeaderboardStrings;
+    QOUNTERS_EXPORT extern std::vector<std::string_view> const AverageCutPartStrings;
+    QOUNTERS_EXPORT extern std::vector<std::string_view> const PBDisplayStrings;
+    QOUNTERS_EXPORT extern std::vector<std::string_view> const NotesDisplayStrings;
+    QOUNTERS_EXPORT extern std::vector<std::string_view> const PPLeaderboardStrings;
+    QOUNTERS_EXPORT extern std::vector<std::string_view> const SaberSpeedModeStrings;
+    QOUNTERS_EXPORT extern std::vector<std::string_view> const SpinometerModeStrings;
+    QOUNTERS_EXPORT extern std::vector<std::string_view> const RankedStatusLeaderboardStrings;
 
     namespace Text {
         inline std::string const StaticName = "Static";
@@ -191,23 +194,23 @@ namespace Qounters::Sources {
             VALUE_DEFAULT(int, Decimals, 1);
         };
 
-        std::string GetStatic(UnparsedJSON options);
-        std::string GetScore(UnparsedJSON options);
-        std::string GetRank(UnparsedJSON options);
-        std::string GetPersonalBest(UnparsedJSON options);
-        std::string GetCombo(UnparsedJSON options);
-        std::string GetMultiplier(UnparsedJSON options);
-        std::string GetHealth(UnparsedJSON options);
-        std::string GetTime(UnparsedJSON options);
-        std::string GetAverageCut(UnparsedJSON options);
-        std::string GetTimeDependence(UnparsedJSON options);
-        std::string GetFails(UnparsedJSON options);
-        std::string GetMistakes(UnparsedJSON options);
-        std::string GetNotes(UnparsedJSON options);
-        std::string GetPP(UnparsedJSON options);
-        std::string GetSaberSpeed(UnparsedJSON options);
-        std::string GetSpinometer(UnparsedJSON options);
-        std::string GetFCPercent(UnparsedJSON options);
+        QOUNTERS_EXPORT std::string GetStatic(UnparsedJSON options);
+        QOUNTERS_EXPORT std::string GetScore(UnparsedJSON options);
+        QOUNTERS_EXPORT std::string GetRank(UnparsedJSON options);
+        QOUNTERS_EXPORT std::string GetPersonalBest(UnparsedJSON options);
+        QOUNTERS_EXPORT std::string GetCombo(UnparsedJSON options);
+        QOUNTERS_EXPORT std::string GetMultiplier(UnparsedJSON options);
+        QOUNTERS_EXPORT std::string GetHealth(UnparsedJSON options);
+        QOUNTERS_EXPORT std::string GetTime(UnparsedJSON options);
+        QOUNTERS_EXPORT std::string GetAverageCut(UnparsedJSON options);
+        QOUNTERS_EXPORT std::string GetTimeDependence(UnparsedJSON options);
+        QOUNTERS_EXPORT std::string GetFails(UnparsedJSON options);
+        QOUNTERS_EXPORT std::string GetMistakes(UnparsedJSON options);
+        QOUNTERS_EXPORT std::string GetNotes(UnparsedJSON options);
+        QOUNTERS_EXPORT std::string GetPP(UnparsedJSON options);
+        QOUNTERS_EXPORT std::string GetSaberSpeed(UnparsedJSON options);
+        QOUNTERS_EXPORT std::string GetSpinometer(UnparsedJSON options);
+        QOUNTERS_EXPORT std::string GetFCPercent(UnparsedJSON options);
     }
 
     namespace Shape {
@@ -244,13 +247,13 @@ namespace Qounters::Sources {
             VALUE_DEFAULT(int, Saber, (int) Types::Sabers::Both);
         };
 
-        float GetStatic(UnparsedJSON options);
-        float GetScore(UnparsedJSON options);
-        float GetMultiplier(UnparsedJSON options);
-        float GetHealth(UnparsedJSON options);
-        float GetTime(UnparsedJSON options);
-        float GetAverageCut(UnparsedJSON options);
-        float GetNotes(UnparsedJSON options);
+        QOUNTERS_EXPORT float GetStatic(UnparsedJSON options);
+        QOUNTERS_EXPORT float GetScore(UnparsedJSON options);
+        QOUNTERS_EXPORT float GetMultiplier(UnparsedJSON options);
+        QOUNTERS_EXPORT float GetHealth(UnparsedJSON options);
+        QOUNTERS_EXPORT float GetTime(UnparsedJSON options);
+        QOUNTERS_EXPORT float GetAverageCut(UnparsedJSON options);
+        QOUNTERS_EXPORT float GetNotes(UnparsedJSON options);
     }
 
     namespace Color {
@@ -314,13 +317,13 @@ namespace Qounters::Sources {
             VALUE_DEFAULT(ConfigUtils::Color, BelowHalf, ConfigUtils::Color(1, 1, 1, 1));
         };
 
-        UnityEngine::Color GetStatic(UnparsedJSON options);
-        UnityEngine::Color GetPlayer(UnparsedJSON options);
-        UnityEngine::Color GetRank(UnparsedJSON options);
-        UnityEngine::Color GetPersonalBest(UnparsedJSON options);
-        UnityEngine::Color GetCombo(UnparsedJSON options);
-        UnityEngine::Color GetMultiplier(UnparsedJSON options);
-        UnityEngine::Color GetHealth(UnparsedJSON options);
+        QOUNTERS_EXPORT UnityEngine::Color GetStatic(UnparsedJSON options);
+        QOUNTERS_EXPORT UnityEngine::Color GetPlayer(UnparsedJSON options);
+        QOUNTERS_EXPORT UnityEngine::Color GetRank(UnparsedJSON options);
+        QOUNTERS_EXPORT UnityEngine::Color GetPersonalBest(UnparsedJSON options);
+        QOUNTERS_EXPORT UnityEngine::Color GetCombo(UnparsedJSON options);
+        QOUNTERS_EXPORT UnityEngine::Color GetMultiplier(UnparsedJSON options);
+        QOUNTERS_EXPORT UnityEngine::Color GetHealth(UnparsedJSON options);
     }
 
     namespace Enable {
@@ -351,10 +354,10 @@ namespace Qounters::Sources {
         };
         DECLARE_JSON_STRUCT(Failed){};
 
-        bool GetStatic(UnparsedJSON options);
-        bool GetRanked(UnparsedJSON options);
-        bool GetFullCombo(UnparsedJSON options);
-        bool GetPercentage(UnparsedJSON options);
-        bool GetFailed(UnparsedJSON options);
+        QOUNTERS_EXPORT bool GetStatic(UnparsedJSON options);
+        QOUNTERS_EXPORT bool GetRanked(UnparsedJSON options);
+        QOUNTERS_EXPORT bool GetFullCombo(UnparsedJSON options);
+        QOUNTERS_EXPORT bool GetPercentage(UnparsedJSON options);
+        QOUNTERS_EXPORT bool GetFailed(UnparsedJSON options);
     }
 }
