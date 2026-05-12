@@ -25,8 +25,8 @@ add_compile_options(-frtti -fexceptions)
 add_compile_options(-O3)
 
 # compile definitions used
-add_compile_definitions(VERSION=\"${MOD_VERSION}\")
-add_compile_definitions(MOD_ID=\"${MOD_ID}\")
+add_compile_definitions(VERSION="${MOD_VERSION}")
+add_compile_definitions(MOD_ID="${MOD_ID}")
 
 # recursively get all src files
 recurse_files(cpp_file_list ${SOURCE_DIR}/*.cpp)
@@ -57,57 +57,8 @@ include(extern.cmake)
 add_custom_command(
     TARGET ${COMPILE_ID}
     POST_BUILD
-    COMMAND ${CMAKE_STRIP} -d --strip-all "lib${COMPILE_ID}.so" -o "stripped_lib${COMPILE_ID}.so"
-    COMMENT "Strip debug symbols done on final binary."
+    COMMAND ${CMAKE_COMMAND} -E make_directory "debug"
+    COMMAND ${CMAKE_COMMAND} -E rename "lib${COMPILE_ID}.so" "debug/lib${COMPILE_ID}.so"
+    COMMAND ${CMAKE_STRIP} -d --strip-all "debug/lib${COMPILE_ID}.so" -o "lib${COMPILE_ID}.so"
+    COMMENT "Create stripped and debug libraries"
 )
-
-add_custom_command(
-    TARGET ${COMPILE_ID}
-    POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E make_directory debug
-    COMMENT "Make directory for debug symbols"
-)
-
-add_custom_command(
-    TARGET ${COMPILE_ID}
-    POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E rename lib${COMPILE_ID}.so debug/lib${COMPILE_ID}.so
-    COMMENT "Rename the lib to debug_ since it has debug symbols"
-)
-
-# strip debug symbols from the .so and all dependencies
-add_custom_command(
-    TARGET ${COMPILE_ID}
-    POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E rename stripped_lib${COMPILE_ID}.so lib${COMPILE_ID}.so
-    COMMENT "Rename the stripped lib to regular"
-)
-
-foreach(so_file ${so_list})
-    cmake_path(GET so_file FILENAME file)
-
-    add_custom_command(
-        TARGET ${COMPILE_ID}
-        POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy ${so_file} debug/${file}
-        COMMENT "Copy so files for ndk stack"
-    )
-
-    add_custom_command(
-        TARGET ${COMPILE_ID}
-        POST_BUILD
-        COMMAND ${CMAKE_STRIP} -g -S -d --strip-all ${so_file} -o ${file}
-        COMMENT "Strip debug symbols from the dependencies"
-    )
-endforeach()
-
-foreach(a_file ${a_list})
-    cmake_path(GET a_file FILENAME file)
-
-    add_custom_command(
-        TARGET ${COMPILE_ID}
-        POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy ${a_file} debug/${file}
-        COMMENT "Copy a files for ndk stack"
-    )
-endforeach()
