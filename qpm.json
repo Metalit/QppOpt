@@ -6,7 +6,7 @@
   "info": {
     "name": "Optional Qounters++",
     "id": "qppopt",
-    "version": "1.1.2",
+    "version": "1.1.5",
     "url": "https://github.com/Metalit/QppOpt",
     "additionalData": {
       "overrideSoName": "libqountersplusplus.so",

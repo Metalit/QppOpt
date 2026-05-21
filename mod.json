@@ -11,9 +11,9 @@
   "coverImage": "cover.png",
   "dependencies": [
     {
-      "version": "^1.1.4",
+      "version": "^1.1.5",
       "id": "qounters++",
-      "downloadIfMissing": "https://github.com/Metalit/Qounters/releases/download/v1.1.4/Qounters++.qmod",
+      "downloadIfMissing": "https://github.com/Metalit/Qounters/releases/download/v1.1.5/Qounters++.qmod",
       "required": false
     }
   ],
