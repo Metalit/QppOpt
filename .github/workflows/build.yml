@@ -2,7 +2,7 @@ name: Build
 
 env:
   module_id: qountersplusplus
-  qmodName: Optional Qounters++
+  qmodName: QppOpt
 
 on:
   workflow_dispatch:
